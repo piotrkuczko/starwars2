@@ -18,9 +18,12 @@ protected:
     ImperialStarship() {};
 
 public:
-    ShieldPoints getShield() { return shield; }
-    AttackPower getAttackPower() { return power; }
-    void takeDamage(AttackPower damage) { shield = (damage>=shield)? 0:shield-damage; }
+    virtual ShieldPoints getShield() { return shield; }
+    virtual AttackPower getAttackPower() { return power; }
+    virtual void takeDamage(AttackPower damage) { shield = (damage>=shield)? 0:shield-damage; }
+    void show () {
+        std::cout << getShield() << " " << getAttackPower() << "\n";
+    }
 };
 
 class DeathStar : public ImperialStarship {
@@ -52,7 +55,7 @@ private:
 public:
     Squadron (std::vector<ImperialStarship> v) : v(v) {};
     Squadron (std::initializer_list<ImperialStarship> l) : v(l) {};
-    ShieldPoints getShield() {
+    ShieldPoints getShield() override {
         if (shield == -1) {
             shield = 0;
             for (auto it : v)
@@ -60,15 +63,16 @@ public:
         }
         return shield;
     }
-    AttackPower getAttackPower() {
+    AttackPower getAttackPower() override {
         if (power == -1) {
             power = 0;
-            for (auto it : v)
+            for (auto it : v) {
                 power += it.getAttackPower();
+            }
         }
         return power;
     }
-    void takeDamage(AttackPower damage) {
+    void takeDamage(AttackPower damage) override {
         shield = 0;
         for (auto it : v) {
             it.takeDamage(damage);

@@ -2,6 +2,7 @@
 #define STARWARS2_REBELFLEET_H
 
 #include <iostream>
+#include <cassert>
 
 /*
  * TODO: brak funkcji fabrykujących

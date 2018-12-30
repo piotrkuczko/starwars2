@@ -13,8 +13,18 @@ int main() {
     auto fighter = createTIEFighter(50, 9);
     auto destroyer = createImperialDestroyer(150, 20);
     auto squadron = createSquadron({deathStar, fighter});
+    std::cout << "squadron: " << squadron.getShield() << "  " << squadron.getAttackPower() << std::endl;
     xwing.show();
     explorer.show();
     cruiser.show();
+    auto battle = SpaceBattle::Builder()
+            .ship(squadron)
+            .startTime(2)
+            .maxTime(23)
+            .ship(explorer)
+            .ship(xwing)
+            .build();
+
+    battle.atakuj();
     return 0;
 }
