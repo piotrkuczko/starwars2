@@ -13,7 +13,7 @@ int main() {
     auto fighter = createTIEFighter(50, 9);
     auto destroyer = createImperialDestroyer(150, 20);
     auto squadron = createSquadron({deathStar, fighter});
-    std::cout << "squadron: " << squadron.getShield() << "  " << squadron.getAttackPower() << std::endl;
+    std::cout << "squadron: " << squadron->getShield() << "  " << squadron->getAttackPower() << std::endl;
     xwing.show();
     explorer.show();
     cruiser.show();
@@ -21,10 +21,13 @@ int main() {
             .ship(squadron)
             .startTime(2)
             .maxTime(23)
-            .ship(explorer)
             .ship(xwing)
+            .ship(explorer)
             .build();
 
+    std::cout << "imp: " << battle.countImperialFleet() << " " << battle.countRebelFleet() << std::endl;
     battle.atakuj();
+
+    std::cout << "imp: " << battle.countImperialFleet() << " " << battle.countRebelFleet() << std::endl;
     return 0;
 }

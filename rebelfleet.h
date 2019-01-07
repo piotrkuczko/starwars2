@@ -18,6 +18,7 @@ using AttackPower = int;
 
 class RebelStarship {
 protected:
+    size_t count = 1;
     virtual void checkSpeed(){};
     ShieldPoints shield = -1;
     Speed speed = -1;
@@ -27,12 +28,12 @@ protected:
         std::cout << "RebelStarship: " << shield << " " << speed << " " << power << std::endl; checkSpeed();}
     RebelStarship() {};
 public:
+    size_t getCount () { return count; }
     ShieldPoints getShield() { return shield; } //zwraca wytrzymałość tarczy,
     Speed getSpeed() { return speed; } //zwraca prędkość statku,
-    void takeDamage(AttackPower damage) {
-        shield = (damage>=shield)? 0:shield-damage;
+    virtual void takeDamage(AttackPower damage) { shield = (damage>=shield)? 0:shield-damage;
+        if (shield == 0) count = 0;
     }
-
     AttackPower getAttackPower() { return power; }
     void show () {
         std::cout << shield << " " << speed << " " << power << "\n";
