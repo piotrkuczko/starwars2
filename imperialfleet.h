@@ -61,8 +61,8 @@ class Squadron : public ImperialStarship {
 private:
     std::vector<std::shared_ptr<ImperialStarship>> v;
 public:
-    Squadron (std::vector<std::shared_ptr<ImperialStarship>> v) : v(v) {};
-    Squadron (std::initializer_list<std::shared_ptr<ImperialStarship>> l) : v(l) {};
+    Squadron (std::vector<std::shared_ptr<ImperialStarship>> v) : v(v) {getShield();};
+    Squadron (std::initializer_list<std::shared_ptr<ImperialStarship>> l) : v(l) {getShield();};
     ShieldPoints getShield() override {
         if (shield == -1) {
             shield = 0;

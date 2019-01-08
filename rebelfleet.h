@@ -45,7 +45,7 @@ public:
 class Explorer : public RebelStarship {
 private:
 protected:
-    void checkSpeed() { assert(299796<=speed && speed<=2997960); }
+    void checkSpeed() override { assert(299796<=speed && speed<=2997960); }
 public:
     Explorer (ShieldPoints shield, Speed speed) {
         RebelStarship::shield=shield; RebelStarship::speed=speed; checkSpeed(); };
@@ -59,7 +59,7 @@ Explorer createExplorer (ShieldPoints shield, Speed speed) {
 class StarCruiser : public RebelStarship {
 private:
 protected:
-    void checkSpeed() { assert(99999<=speed && speed<=299795); }
+    void checkSpeed() override { assert(99999<=speed && speed<=299795); }
 public:
     StarCruiser (ShieldPoints shield, Speed speed, AttackPower power) : RebelStarship(shield, speed, power) {};
 };
@@ -71,7 +71,7 @@ StarCruiser createStarCruiser (ShieldPoints shield, Speed speed, AttackPower pow
 class XWing : public RebelStarship {
 private:
 protected:
-    void checkSpeed() { assert(299796<=speed && speed<=2997960); }
+    void checkSpeed() override { assert(299796<=speed && speed<=2997960); }
 public:
     XWing (ShieldPoints shield, Speed speed, AttackPower power) : RebelStarship(shield, speed, power) {};
 };
