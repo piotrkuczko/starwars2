@@ -1,4 +1,5 @@
 #include <cassert>
+#include <vector>
 #include "imperialfleet.h"
 #include "rebelfleet.h"
 #include "battle.h"
@@ -10,9 +11,11 @@ int main() {
     auto deathStar = createDeathStar(10000, 75);
     auto fighter = createTIEFighter(50, 9);
     auto destroyer = createImperialDestroyer(150, 20);
+    std::vector <std::shared_ptr<ImperialStarship>> abc;
+    std::initializer_list <std::shared_ptr<ImperialStarship>> zda = {deathStar, fighter};
+    abc = zda;
     auto squadron = createSquadron({deathStar, fighter});
-    auto squadron2 = createSquadron({squadron, deathStar});
-
+    //auto squadron = createSquadron(abc);
     auto battle = SpaceBattle::Builder()
         .ship(squadron)
         .startTime(2)

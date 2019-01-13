@@ -14,9 +14,6 @@ int main() {
     auto destroyer = createImperialDestroyer(150, 20);
     auto squadron = createSquadron({deathStar, fighter});
     std::cout << "squadron: " << squadron->getShield() << "  " << squadron->getAttackPower() << std::endl;
-    xwing.show();
-    explorer.show();
-    cruiser.show();
     auto battle = SpaceBattle::Builder()
             .ship(squadron)
             .startTime(2)
@@ -26,7 +23,6 @@ int main() {
             .build();
 
     std::cout << "imp: " << battle.countImperialFleet() << " " << battle.countRebelFleet() << std::endl;
-    battle.atakuj();
 
     std::cout << "imp: " << battle.countImperialFleet() << " " << battle.countRebelFleet() << std::endl;
     return 0;

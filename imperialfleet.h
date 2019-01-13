@@ -90,7 +90,7 @@ public:
     }
 };
 
-std::shared_ptr<Squadron> createSquadron(std::vector<std::shared_ptr<ImperialStarship>> &v) {
+std::shared_ptr<Squadron> createSquadron(std::vector<std::shared_ptr<ImperialStarship>> v) {
     return std::make_shared<Squadron>(v);
 }
 
