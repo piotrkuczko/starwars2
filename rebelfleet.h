@@ -3,90 +3,66 @@
 
 #include <iostream>
 #include <cassert>
-
-using ShieldPoints = int;
-using Speed = int;
-using AttackPower = int;
+#include "helper.h"
 
 
-class RebelStarship {
+class RebelStarship : public Starship {
+    friend SpaceBattle;
 protected:
-    size_t count = 1;
-
-    virtual void checkSpeed() {};
-    ShieldPoints shield = -1;
     Speed speed = -1;
     AttackPower power = -1;
 
-    RebelStarship(ShieldPoints shield, Speed speed, AttackPower power)
-            : shield(shield), speed(speed), power(power) { checkSpeed(); }
+    virtual bool hasAttackPower() { return true; };
 
-    RebelStarship() {};
+    explicit RebelStarship(ShieldPoints shield, Speed speed, AttackPower power)
+            : Starship(shield), speed(speed), power(power) {}
+
+    explicit RebelStarship(ShieldPoints shield, Speed speed) : Starship(shield), speed(speed) {};
+
 public:
-    size_t getCount() { return count; }
-
-    ShieldPoints getShield() { return shield; }
-
     Speed getSpeed() { return speed; }
 
-    void takeDamage(AttackPower damage) {
-        shield = (damage >= shield) ? 0 : shield - damage;
-        if (shield == 0) count = 0;
-    }
-
     AttackPower getAttackPower() { return power; }
-
-    virtual bool hasAttackPower() { return true; };
-    //void show () { std::cout << shield << " " << speed << " " << power << "\n"; }
-
 };
 
 
 class Explorer : public RebelStarship {
 private:
 protected:
-    void checkSpeed() override { assert(299796 <= speed && speed <= 2997960); }
-
+    bool hasAttackPower() override { return false; };
 public:
-    Explorer(ShieldPoints shield, Speed speed) {
-        RebelStarship::shield = shield;
+    Explorer(ShieldPoints shield, Speed speed) : RebelStarship(shield, speed) {
         RebelStarship::speed = speed;
-        checkSpeed();
+        assert(299796 <= speed && speed <= 2997960);
     };
 
     AttackPower getAttackPower() = delete;
-
-    virtual bool hasAttackPower() override { return false; };
 };
 
-Explorer createExplorer(ShieldPoints shield, Speed speed) {
-    return Explorer(shield, speed);
+std::shared_ptr<Explorer> createExplorer(ShieldPoints shield, Speed speed) {
+    return std::make_shared<Explorer>(shield, speed);
 }
 
 class StarCruiser : public RebelStarship {
-private:
-protected:
-    void checkSpeed() override { assert(99999 <= speed && speed <= 299795); }
-
 public:
-    StarCruiser(ShieldPoints shield, Speed speed, AttackPower power) : RebelStarship(shield, speed, power) {};
+    StarCruiser(ShieldPoints shield, Speed speed, AttackPower power) : RebelStarship(shield, speed, power) {
+        assert(99999 <= speed && speed <= 299795);
+    };
 };
 
-StarCruiser createStarCruiser(ShieldPoints shield, Speed speed, AttackPower power) {
-    return StarCruiser(shield, speed, power);
+std::shared_ptr<StarCruiser> createStarCruiser(ShieldPoints shield, Speed speed, AttackPower power) {
+    return std::make_shared<StarCruiser>(shield, speed, power);
 }
 
 class XWing : public RebelStarship {
-private:
-protected:
-    void checkSpeed() override { assert(299796 <= speed && speed <= 2997960); }
-
 public:
-    XWing(ShieldPoints shield, Speed speed, AttackPower power) : RebelStarship(shield, speed, power) {};
+    XWing(ShieldPoints shield, Speed speed, AttackPower power) : RebelStarship(shield, speed, power) {
+        assert(299796 <= speed && speed <= 2997960);
+    };
 };
 
-XWing createXWing(ShieldPoints shield, Speed speed, AttackPower power) {
-    return XWing(shield, speed, power);
+std::shared_ptr<XWing> createXWing(ShieldPoints shield, Speed speed, AttackPower power) {
+    return std::make_shared<XWing>(shield, speed, power);
 }
 
 #endif //STARWARS2_REBELFLEET_H

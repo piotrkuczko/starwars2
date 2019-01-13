@@ -3,29 +3,21 @@
 
 #include <vector>
 #include <memory>
-#include "rebelfleet.h"
+#include <iostream>
+#include "helper.h"
 
-class ImperialStarship {
+class ImperialStarship : public Starship {
+    friend SpaceBattle;
 protected:
-    size_t count = 1;
-    ShieldPoints shield = -1;
     AttackPower power = -1;
 
-    ImperialStarship(ShieldPoints shield, AttackPower power) : shield(shield), power(power) {};
+    ImperialStarship(ShieldPoints shield, AttackPower power) : Starship(shield), power(power) {};
 
-    ImperialStarship() {};
+    ImperialStarship() : Starship() {};
 
 public:
-    size_t getCount() { return count; }
-
-    virtual ShieldPoints getShield() { return shield; };
 
     virtual AttackPower getAttackPower() { return power; }
-
-    virtual void takeDamage(AttackPower damage) {
-        shield = (damage >= shield) ? 0 : shield - damage;
-        if (shield == 0) count = 0;
-    }
 };
 
 class DeathStar : public ImperialStarship {
@@ -59,17 +51,15 @@ class Squadron : public ImperialStarship {
 private:
     std::vector<std::shared_ptr<ImperialStarship>> v;
 public:
-    Squadron(std::vector<std::shared_ptr<ImperialStarship>> v) : v(v) { getShield(); };
+    explicit Squadron(std::vector<std::shared_ptr<ImperialStarship>> v) : v(v) { takeDamage(0); };
 
-    Squadron(std::initializer_list<std::shared_ptr<ImperialStarship>> l) : v(l) { getShield(); };
+    Squadron(std::initializer_list<std::shared_ptr<ImperialStarship>> l) : v(l) { takeDamage(0); };
 
     ShieldPoints getShield() override {
         if (shield == -1) {
             shield = 0;
-            count = 0;
             for (auto it : v) {
                 shield += it->getShield();
-                count += it->getCount();
             }
         }
         return shield;

@@ -2,6 +2,7 @@
 #define STARWARS2_BATTLE_H
 
 #include <iostream>
+#include "helper.h"
 #include "rebelfleet.h"
 #include "imperialfleet.h"
 
@@ -11,13 +12,18 @@ class Clock {
 private:
     Time time, maxTime;
 public:
-    Clock(Time time, Time maxTime) : time(time), maxTime(maxTime) {};
+    Clock(Time time, Time maxTime) : time(time), maxTime(maxTime) {
+        assert(time <= maxTime);
+        assert(0 <= time);
+        assert(0 < maxTime);
+    };
 
     bool timeToBattle() {
         return (time % 2 == 0 || time % 3 == 0) && (time % 5 != 0);
     }
 
     void increaseTime(Time timeStep) {
+        assert(time >= 0);
         time += timeStep;
         if (time > maxTime) time = time % (maxTime + 1);
     }
@@ -30,7 +36,7 @@ protected:
     size_t countImperial = 0, countRebel = 0;
     Time startTime, maxTime;
     std::vector<std::shared_ptr<ImperialStarship>> imperial;
-    std::vector<RebelStarship *> rebel;
+    std::vector<std::shared_ptr<RebelStarship>> rebel;
 
     void attack() {
         for (auto i : imperial) {
@@ -58,9 +64,11 @@ protected:
     }
 
 protected:
-    SpaceBattle(std::vector<std::shared_ptr<ImperialStarship>> imperial, std::vector<RebelStarship *> rebel,
+    SpaceBattle(std::vector<std::shared_ptr<ImperialStarship>> imperial,
+                std::vector<std::shared_ptr<RebelStarship>> rebel,
                 Time startTime, Time maxTime, Clock clock)
             : imperial(imperial), rebel(rebel), startTime(startTime), maxTime(maxTime), clock(clock) {
+
     };
 public:
     class Builder;
@@ -104,7 +112,7 @@ class SpaceBattle::Builder {
 private:
     Time time0, time1;
     std::vector<std::shared_ptr<ImperialStarship>> imperialB;
-    std::vector<RebelStarship *> rebelB;
+    std::vector<std::shared_ptr<RebelStarship>> rebelB;
 public:
     Builder() {};
 
@@ -113,13 +121,8 @@ public:
         return *this;
     }
 
-    Builder ship(Explorer ship1) {
-        rebelB.emplace_back(&ship1);
-        return *this;
-    }
-
-    Builder ship(RebelStarship ship1) {
-        rebelB.emplace_back(&ship1);
+    Builder ship(std::shared_ptr<RebelStarship> ship1) {
+        rebelB.emplace_back(ship1);
         return *this;
     }
 
