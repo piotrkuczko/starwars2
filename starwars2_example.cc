@@ -11,6 +11,7 @@ int main() {
     auto fighter = createTIEFighter(50, 9);
     auto destroyer = createImperialDestroyer(150, 20);
     auto squadron = createSquadron({deathStar, fighter});
+    auto squadron2 = createSquadron({squadron, deathStar});
 
     auto battle = SpaceBattle::Builder()
         .ship(squadron)
@@ -19,6 +20,8 @@ int main() {
         .ship(xwing)
         .ship(explorer)
         .build();
+
+    std::cout << squadron->getAttackPower() << std::endl;
 
     assert(battle.countRebelFleet() == 2);
     assert(battle.countImperialFleet() == 2);
@@ -35,5 +38,7 @@ int main() {
     assert(battle.countRebelFleet() == 0);
     assert(battle.countImperialFleet() == 1);
 
+
     battle.tick(1); // Wypisuje "IMPERIUM WON\n".
+    std::cout << squadron->getAttackPower();
 }
