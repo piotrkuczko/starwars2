@@ -10,7 +10,7 @@
 #include <string>
 #include <sstream>
 
-#define TEST_NUM 301
+#define TEST_NUM 201
 
 /// 1* compilation error
 /// 2* construction check
