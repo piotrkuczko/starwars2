@@ -41,9 +41,11 @@ protected:
     void attack() {
         for (auto i : imperial) {
             for (auto r : rebel) {
-                r->takeDamage(i->getAttackPower());
-                if (r->hasAttackPower())
-                    i->takeDamage(r->getAttackPower());
+                if (r->getShield() > 0 && i->getShield() > 0) {
+                    r->takeDamage(i->getAttackPower());
+                    if (r->hasAttackPower())
+                        i->takeDamage(r->getAttackPower());
+                }
             }
         }
     }

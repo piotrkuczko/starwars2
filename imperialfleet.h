@@ -69,7 +69,8 @@ public:
         if (power == -1) {
             power = 0;
             for (auto it : v) {
-                power += it->getAttackPower();
+                if (it->getShield() > 0)
+                    power += it->getAttackPower();
             }
         }
         return power;
@@ -78,9 +79,12 @@ public:
     void takeDamage(AttackPower damage) override {
         shield = 0;
         count = 0;
+        power = 0;
         for (auto it : v) {
             it->takeDamage(damage);
             shield += it->getShield();
+            if (it->getShield() > 0)
+                power += it->getAttackPower();
             count += it->getCount();
         }
     }
